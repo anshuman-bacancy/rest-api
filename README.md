@@ -1,7 +1,7 @@
 Practice of REST API using Gorilla Mux
 
 ## Todo ##
- ** Add frontend
+ * Add frontend
 
 ---
 **NOTE**
