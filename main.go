@@ -10,7 +10,7 @@ import (
 )
 
 func main() {
-	servername := "userserver"
+	servername := "userdb"
 	password := "password"
 	host := "localhost"
 
@@ -23,7 +23,7 @@ func main() {
 	router.HandleFunc("/users", handler.GetUsersHandler).Methods("GET")
 	router.HandleFunc("/users/{email}", handler.GetUserHandler).Methods("GET")
 	router.HandleFunc("/user", handler.AddUserHandler).Methods("POST")
-	router.HandleFunc("/user/{email}", handler.UpdateUserHandler).Methods("UPDATE")
+	router.HandleFunc("/user/{email}", handler.UpdateUserHandler).Methods("PUT")
 	router.HandleFunc("/user/{email}", handler.DeleteUserHandler).Methods("DELETE")
 
 	server.InitializeFileServer()

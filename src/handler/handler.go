@@ -11,10 +11,8 @@ import (
 
 var tpl *template.Template
 
-
-// Home serves 'home' page
+// Home handles "/"
 func Home(res http.ResponseWriter, req *http.Request) {
-	//res.Write([]byte("reached here"))
 	tpl = template.Must(template.ParseGlob("assets/*.html"))
 	tpl.ExecuteTemplate(res, "index.html", nil) 
 }

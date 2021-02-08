@@ -4,20 +4,17 @@ import (
 	"database/sql"
 	"fmt"
 	"models"
+	"server"
 	"utilities"
 
 	"github.com/google/uuid"
 )
 
-var db *sql.DB
-
 // GetUser return []model.User from database
 func GetUser(email string) models.User {
-	getUser := "SELECT * from user where email = $1"
-
+	getUser := "SELECT * from users where email = $1"
 	var user models.User
-
-	row := db.QueryRow(getUser, email)
+	row := server.Db.QueryRow(getUser, email)
 	rowErr := row.Scan(&user.Id, &user.Name, &user.Email, &user.Position)
 	switch rowErr {
 		case sql.ErrNoRows:
@@ -29,13 +26,12 @@ func GetUser(email string) models.User {
 	}
 
 	return user
-
 }
 
 // GetUsers return []model.User
 func GetUsers() []models.User {
 	users := "SELECT * from users"
-	rows, err := db.Query(users)
+	rows, err := server.Db.Query(users)
 	utilities.CheckError(err)
 
 	defer rows.Close()
@@ -55,20 +51,20 @@ func GetUsers() []models.User {
 func AddUser(name, email, position string) {
 	id := uuid.NewString()
 	insUser := `INSERT INTO users (id, name, email, position) VALUES ($1, $2, $3, $4)`
-  _, err := db.Exec(insUser, id, name, email, position)
+  _, err := server.Db.Exec(insUser, id, name, email, position)
 	utilities.CheckError(err) 
 }
 
 // DeleteUser deletes model.User from database
 func DeleteUser(email string) {
 	delUser := "DELETE from users where email = $1"
-	_, err := db.Exec(delUser, email)
+	_, err := server.Db.Exec(delUser, email)
 	utilities.CheckError(err)
 }
 
 // UpdateUser updates []model.User based on email
 func UpdateUser(oldEmail, name, newEmail, position string) {
 	updUser := "UPDATE users set name=$1, email=$2, position=$3 where email=$4"
-	_, err := db.Exec(updUser,  name, newEmail, position, oldEmail)
+	_, err := server.Db.Exec(updUser,  name, newEmail, position, oldEmail)
 	utilities.CheckError(err)
 }

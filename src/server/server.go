@@ -4,15 +4,20 @@ import (
 	"database/sql"
 	"log"
 	"net/http"
+	"utilities"
+
+	_ "github.com/lib/pq"
 )
 
-// Db is Db object
+// Db is global Db object
 var Db *sql.DB
+var dberror error
 
 // InitializeDatabase makes connection to database
 func InitializeDatabase(host, password, dbname string) {
 	connection := "postgres://postgres:"+password+"@"+host+"/"+dbname+"?sslmode=disable"
-	Db, _ = sql.Open("postgres", connection)
+	Db, dberror = sql.Open("postgres", connection)
+	utilities.CheckError(dberror)
 	log.Println("Database connection successful..")
 }
 
